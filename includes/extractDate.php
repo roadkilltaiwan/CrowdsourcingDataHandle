@@ -1,4 +1,26 @@
 <?php
+
+/*
+  A function to extract dates of different formats
+  Copyright (C) 2013  Jason Guan-Shuo Mai
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+
+
+
 /*
 $m[] = "2013年05月22日09:50 地點：橫山大山背S：120度8.140'　Ｎ：24度40.892' 高度474M 長度39cm 台灣鈍頭蛇(?)";
 $m[] = '2013-08-05 福山植物園  這邊遇到的第三種蛇、第六條蛇... 卻是剛被壓到頭，身體還在扭動的個體...';

@@ -6,12 +6,15 @@ Author: Dongpo Deng <dongpo.deng@gmail.com>
 Licensed under The MIT License
 Redistributions of files must retain the above copyright notice.
 *******************************************************************************/
+
+// Regex patterns are modified and extended by Jason Guan-Shuo Mai
+
 function extract_xy($str){
 	global $argv;
 	$matches = array();
 	preg_match('#(?P<x>(118|119|120|121|122)\.[0-9]{1,6})#',$str, $matches1);
 	preg_match('#(?P<y>(21|22|23|24|25)\.[0-9]{1,6})#',$str, $matches2);
-	preg_match('#(?P<y>[^1](21|22|23|24|25)\.[0-9]{1,6})#',$str, $matches2_1);
+	preg_match('#(?P<y>[^1]((21|22|23|24|25)\.[0-9]{1,6}))#',$str, $matches2_1);
 	preg_match('#(?P<x>(118|119|120|121|122).{2}[ ]*([0-9]{1,}\.[0-9]{1,})\')#',$str, $matches3_1);
 	preg_match('#(?P<y>[^0-9]?(21|22|23|24|25).{2}[ ]*([0-9]{1,}\.[0-9]{1,})\')#',$str, $matches4_1);
 	preg_match('#(?P<x>(118|119|120|121|122)\°[ ]*([0-9]{1,2})\'[ ]*([0-9]{1,2}\.?[0-9]{0,})\")#',$str, $matches3);
@@ -28,7 +31,7 @@ function extract_xy($str){
 
 	if(!empty($matches1['x'])){$matches['x']=$matches1['x'];}
 	if(!empty($matches2['y'])){$matches['y']=$matches2['y'];}
-	if(!empty($matches2_1['y'])){$matches['y']=trim($matches2_1['y']);}
+	if(!empty($matches2_1['y'])){$matches['y']=trim($matches2_1[2]);}
 #	if(!empty($matches3['x'])){$matches['x']=$matches3['x'];}
 	if(!empty($matches3_1['x'])){
 		$matches['x']=round($matches3_1[2] + $matches3_1[3] / 60, 6);
@@ -70,6 +73,7 @@ function extract_xy($str){
 	if (!empty($argv[1])) {
 		var_dump($matches1);
 		var_dump($matches2);
+		var_dump($matches2_1);
 		var_dump($matches3_1);
 		var_dump($matches4_1);
 		var_dump($matches3);

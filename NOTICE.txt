@@ -1,0 +1,19 @@
+Please see the header of each program or script for details
+
+lib/dbclass/Database.singleton.php
+GPL
+Copyright (C) 2003 ricocheting.com
+
+lib/webbots/*
+includes/LIB_http_modified_subset.php
+as announced at the head part of each script under this folder
+Copyright (C) 2007, Michael Schrenk                                                                                 
+
+005_extract_geo.php
+includes/extractXY.php
+MIT License
+Copyright (C) 2013 Dongpo Deng
+
+All others
+GPL3 License
+Copyright (C) 2013 Jason Guan-Shuo Mai
