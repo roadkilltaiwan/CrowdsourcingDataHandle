@@ -93,7 +93,7 @@ else {
 $stop = strtotime($stop_format);
 
 
-$sql = "select * from `Post` where `post_id` like '23%' where `updated_time` >= '".$stop_format."' order by `updated_time` desc;";
+$sql = "select * from `Post` where `updated_time` >= '".$stop_format."' order by `updated_time` desc;";
 $posts = $db->query($sql);
 
 while ($post = mysql_fetch_assoc($posts)) {
