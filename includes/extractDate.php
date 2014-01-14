@@ -57,148 +57,178 @@ foreach ($m as $mm) {
 
 //*/
 
+$debug = false;
+if (!empty($argv[1])) {
+        $debug = true;
+        var_dump(5566);
+}
+
 function extractDate ($string) {
-	$thisYear = (int) date('Y', time(true));
-#	echo $thisYear;
-	$delimiter = array (
-		'\/',
-		'-',
-		'\.',
-		',',
-		' ',
-		'、',
-	);
+        global $debug;
+        $thisYear = (int) date('Y', time(true));
+#       echo $thisYear;
+        $delimiter = array (
+                '\/',
+                '-',
+                '\.',
+                ',',
+                ' ',
+                '、',
+        );
 
-	$hasYear = true;
-	$matched = false;
-	foreach ($delimiter as $d) {
-		$p0 = sprintf('/([0-9]{4})%s([0-9]{1,2})%s([0-9]{1,2})[^0-9]/', '年', '月'); // 西元 yyyy-mm-dd
-		preg_match_all($p0, $string, $match);
-		if (!empty($match[0])) {
-			$year = (int) $match[1][0];
-			$month = (int) $match[2][0];
-			$day = (int) $match[3][0];
-			if (($year >= 1888)&&($year <= $thisYear)&&($month >= 1)&&($month <= 12)&&($day >= 1)&&($day <= 31)) {
-				$matched = true;
-				$date = sprintf("%04d-%02d-%02d", $year, $month, $day);
-#				echo $date . "\n";
-				break;
-			}
-		}
-		$p0_1 = sprintf('/([0-9]{1,2})%s([0-9]{1,2})%s/', '月', '日'); // 西元 yyyy-mm-dd
-		preg_match_all($p0_1, $string, $match);
-		if (!empty($match[0])) {
-			$month = (int) $match[1][0];
-			$day = (int) $match[2][0];
-			if (($month >= 1)&&($month <= 12)&&($day >= 1)&&($day <= 31)) {
-				$matched = true;
-				$date = sprintf("%02d-%02d", $month, $day);
-				$hasYear = false;
-#				echo $date . "\n";
-				break;
-			}
-		}
+        $hasYear = true;
+        $matched = false;
+        foreach ($delimiter as $d) {
+                $p0 = sprintf('/([0-9]{4})%s([0-9]{1,2})%s([0-9]{1,2})[^0-9]/', '年', '月'); // 西元 yyyy-mm-dd
+                preg_match_all($p0, $string, $match);
+#               var_dump($debug);
+                if ($debug) {
+                        var_dump($p0);
+                }
+                if (!empty($match[0])) {
+                        if ($debug) echo $match[0] . "\n";
+                        $year = (int) $match[1][0];
+                        $month = (int) $match[2][0];
+                        $day = (int) $match[3][0];
+                        if (($year >= 1888)&&($year <= $thisYear)&&($month >= 1)&&($month <= 12)&&($day >= 1)&&($day <= 31)) {
+                                $matched = true;
+                                $date = sprintf("%04d-%02d-%02d", $year, $month, $day);
+#                               echo $date . "\n";
+                                break;
+                        }
+                }
+                $p0_1 = sprintf('/([0-9]{1,2})%s([0-9]{1,2})%s/', '月', '日'); // 西元 yyyy-mm-dd
+                preg_match_all($p0_1, $string, $match);
+                if ($debug) var_dump($p0_1);
+                if (!empty($match[0])) {
+                        if ($debug) echo $match[0] . "\n";
+                        $month = (int) $match[1][0];
+                        $day = (int) $match[2][0];
+                        if (($month >= 1)&&($month <= 12)&&($day >= 1)&&($day <= 31)) {
+                                $matched = true;
+                                $date = sprintf("%02d-%02d", $month, $day);
+                                $hasYear = false;
+#                               echo $date . "\n";
+                                break;
+                        }
+                }
+                $p1 = sprintf('/([0-9]{4})%s([0-9]{1,2})%s([0-9]{1,2})[^0-9]/', $d, $d); // 西元 yyyy-mm-dd
+                preg_match_all($p1, $string, $match);
+                if ($debug) var_dump($p1);
+                if (!empty($match[0])) {
+                        if ($debug) echo $match[0] . "\n";
+                        $year = (int) $match[1][0];
+                        $month = (int) $match[2][0];
+                        $day = (int) $match[3][0];
+                        if (($year >= 1888)&&($year <= $thisYear)&&($month >= 1)&&($month <= 12)&&($day >= 1)&&($day <= 31)) {
+                                $matched = true;
+                                $date = sprintf("%04d-%02d-%02d", $year, $month, $day);
+#                               echo $date . "\n";
+                                break;
+                        }
+                }
+                $p1_1 = sprintf('/([0-9]{4})%s([0-9]{1,2})%s([0-9]{1,2})$/', $d, $d); // 西元 yyyy-mm-dd
+                preg_match_all($p1_1, $string, $match);
+                if ($debug) var_dump($p1_1);
+                if (!empty($match[0])) {
+                        if ($debug) echo $match[0] . "\n";
+                        $year = (int) $match[1][0];
+                        $month = (int) $match[2][0];
+                        $day = (int) $match[3][0];
+                        if (($year >= 1888)&&($year <= $thisYear)&&($month >= 1)&&($month <= 12)&&($day >= 1)&&($day <= 31)) {
+                                $matched = true;
+                                $date = sprintf("%04d-%02d-%02d", $year, $month, $day);
+#                               echo $date . "\n";
+                                break;
+                        }
+                }
 
-		$p1 = sprintf('/([0-9]{4})%s([0-9]{1,2})%s([0-9]{1,2})[^0-9]/', $d, $d); // 西元 yyyy-mm-dd
-		preg_match_all($p1, $string, $match);
-		if (!empty($match[0])) {
-			$year = (int) $match[1][0];
-			$month = (int) $match[2][0];
-			$day = (int) $match[3][0];
-			if (($year >= 1888)&&($year <= $thisYear)&&($month >= 1)&&($month <= 12)&&($day >= 1)&&($day <= 31)) {
-				$matched = true;
-				$date = sprintf("%04d-%02d-%02d", $year, $month, $day);
-#				echo $date . "\n";
-				break;
-			}
-		}
-		$p1_1 = sprintf('/([0-9]{4})%s([0-9]{1,2})%s([0-9]{1,2})$/', $d, $d); // 西元 yyyy-mm-dd
-		preg_match_all($p1_1, $string, $match);
-		if (!empty($match[0])) {
-			$year = (int) $match[1][0];
-			$month = (int) $match[2][0];
-			$day = (int) $match[3][0];
-			if (($year >= 1888)&&($year <= $thisYear)&&($month >= 1)&&($month <= 12)&&($day >= 1)&&($day <= 31)) {
-				$matched = true;
-				$date = sprintf("%04d-%02d-%02d", $year, $month, $day);
-#				echo $date . "\n";
-				break;
-			}
-		}
-
-		$p2 = sprintf('/([0-9]{2,3})%s([0-9]{1,2})%s([0-9]{1,2})[^0-9]/', $d, $d); // 民國 yy[y]-mm-dd
-		preg_match_all($p2, $string, $match);
-		if (!empty($match[0])) {
-			$year = (int) $match[1][0] + 1911;
-			$month = (int) $match[2][0];
-			$day = (int) $match[3][0];
-			if (($year >= 1888)&&($year <= $thisYear)&&($month >= 1)&&($month <= 12)&&($day >= 1)&&($day <= 31)) {
-				$matched = true;
-				$date = sprintf("%04d-%02d-%02d", $year, $month, $day);
-#				echo $date . "\n";
-				break;
-			}
-		}
-		$p3 = sprintf('/([0-9]{4})([0-9]{2})([0-9]{2})[^0-9]/'); // 西元 yyyymmdd
-		preg_match_all($p3, $string, $match);
-		if (!empty($match[0])) {
-			$year = (int) $match[1][0];
-			$month = (int) $match[2][0];
-			$day = (int) $match[3][0];
-			if (($year >= 1888)&&($year <= $thisYear)&&($month >= 1)&&($month <= 12)&&($day >= 1)&&($day <= 31)) {
-				$matched = true;
-				$date = sprintf("%04d-%02d-%02d", $year, $month, $day);
-#				echo $date . "\n";
-				break;
-			}
-		}
-		$p3_1 = sprintf('/([0-9]{4})([0-9]{2})([0-9]{2})$/'); // 西元 yyyymmdd
-		preg_match_all($p3_1, $string, $match);
-		if (!empty($match[0])) {
-			$year = (int) $match[1][0];
-			$month = (int) $match[2][0];
-			$day = (int) $match[3][0];
-			if (($year >= 1888)&&($year <= $thisYear)&&($month >= 1)&&($month <= 12)&&($day >= 1)&&($day <= 31)) {
-				$matched = true;
-				$date = sprintf("%04d-%02d-%02d", $year, $month, $day);
-#				echo $date . "\n";
-				break;
-			}
-		}
-		$p4 = sprintf('/([0-9]{1,2})%s([0-9]{1,2})[^\'\"]?[^0-9\'\"]/', $d); // mm-dd
-		preg_match_all($p4, $string, $match);
-		if (!empty($match[0])) {
-			$month = (int) $match[1][0];
-			$day = (int) $match[2][0];
-			if (((int)$month >= 1)&&((int)$month <= 12)&&((int)$day >= 1)&&((int)$day <= 31)) {
-				$matched = true;
-				$date = sprintf("%02d-%02d", $month, $day);
-				$hasYear = false;
-#				echo $date . "\n";
-				break;
-			}
-		}
-		$p5 = sprintf('/[^0-9\'\"°]([0-9]{2})([0-9]{2})[^0-9\'\"]/'); // mmdd
-		preg_match_all($p5, $string, $match);
-		if (!empty($match[0])) {
-			$month = (int) $match[1][0];
-			$day = (int) $match[2][0];
-			if (($month >= 1)&&($month <= 12)&&($day >= 1)&&($day <= 31)) {
-				$matched = true;
-				$date = sprintf("%02d-%02d", $month, $day);
-				$hasYear = false;
-#				echo $date . "\n";
-				break;
-			}
-		}
-
-	}
-	if ($matched) {
-		return array('string' => $string, 'hasYear' => $hasYear, 'date' => $date);
-	}
-	else {
-		return false;
-	}
+                $p2 = sprintf('/([0-9]{2,3})%s([0-9]{1,2})%s([0-9]{1,2})[^0-9]/', $d, $d); // 民國 yy[y]-mm-dd
+                preg_match_all($p2, $string, $match);
+                if ($debug) var_dump($p2);
+                if (!empty($match[0])) {
+                        if ($debug) echo $match[0] . "\n";
+                        $year = (int) $match[1][0] + 1911;
+                        $month = (int) $match[2][0];
+                        $day = (int) $match[3][0];
+                        if (($year >= 1888)&&($year <= $thisYear)&&($month >= 1)&&($month <= 12)&&($day >= 1)&&($day <= 31)) {
+                                $matched = true;
+                                $date = sprintf("%04d-%02d-%02d", $year, $month, $day);
+#                               echo $date . "\n";
+                                break;
+                        }
+                }
+                $p3 = sprintf('/([0-9]{4})([0-9]{2})([0-9]{2})[^0-9]/'); // 西元 yyyymmdd
+                preg_match_all($p3, $string, $match);
+                if ($debug) var_dump($p3);
+                if (!empty($match[0])) {
+                        if ($debug) echo $match[0] . "\n";
+                        $year = (int) $match[1][0];
+                        $month = (int) $match[2][0];
+                        $day = (int) $match[3][0];
+                        if (($year >= 1888)&&($year <= $thisYear)&&($month >= 1)&&($month <= 12)&&($day >= 1)&&($day <= 31)) {
+                                $matched = true;
+                                $date = sprintf("%04d-%02d-%02d", $year, $month, $day);
+#                               echo $date . "\n";
+                                break;
+                        }
+                }
+                $p3_1 = sprintf('/([0-9]{4})([0-9]{2})([0-9]{2})$/'); // 西元 yyyymmdd
+                preg_match_all($p3_1, $string, $match);
+                if ($debug) var_dump($p3_1);
+                if (!empty($match[0])) {
+                        if ($debug) echo $match[0] . "\n";
+                        $year = (int) $match[1][0];
+                        $month = (int) $match[2][0];
+                        $day = (int) $match[3][0];
+                        if (($year >= 1888)&&($year <= $thisYear)&&($month >= 1)&&($month <= 12)&&($day >= 1)&&($day <= 31)) {
+                                $matched = true;
+                                $date = sprintf("%04d-%02d-%02d", $year, $month, $day);
+#                               echo $date . "\n";
+                                break;
+                        }
+                }
+        }
+        if (empty($date)) {
+                foreach ($delimiter as $d) {
+                        $p4 = sprintf('/([0-9]{1,2})%s([0-9]{1,2})[^\'\"]?[^0-9\'\"]/', $d); // mm-dd
+                        preg_match_all($p4, $string, $match);
+                        if ($debug) var_dump($p4);
+                        if (!empty($match[0])) {
+                                if ($debug) echo $match[0] . "\n";
+                                $month = (int) $match[1][0];
+                                $day = (int) $match[2][0];
+                                if (((int)$month >= 1)&&((int)$month <= 12)&&((int)$day >= 1)&&((int)$day <= 31)) {
+                                        $matched = true;
+                                        $date = sprintf("%02d-%02d", $month, $day);
+                                        $hasYear = false;
+        #                               echo $date . "\n";
+                                        break;
+                                }
+                        }
+                        $p5 = sprintf('/[^0-9\'\"°]([0-9]{2})([0-9]{2})[^0-9\'\"]/'); // mmdd
+                        preg_match_all($p5, $string, $match);
+                        if ($debug) var_dump($p5);
+                        if (!empty($match[0])) {
+                                if ($debug) echo $match[0] . "\n";
+                                $month = (int) $match[1][0];
+                                $day = (int) $match[2][0];
+                                if (($month >= 1)&&($month <= 12)&&($day >= 1)&&($day <= 31)) {
+                                        $matched = true;
+                                        $date = sprintf("%02d-%02d", $month, $day);
+                                        $hasYear = false;
+        #                               echo $date . "\n";
+                                        break;
+                                }
+                        }
+                }
+        }
+        if ($matched) {
+                return array('string' => $string, 'hasYear' => $hasYear, 'date' => $date);
+        }
+        else {
+                return false;
+        }
 }
 
 

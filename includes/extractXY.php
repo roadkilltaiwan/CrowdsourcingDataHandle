@@ -25,9 +25,8 @@ function extract_xy($str){
 	preg_match('#(?P<y>[^0-9]+(21|22|23|24|25)\:([0-9]{1,2})\:([0-9]{1,2}\.?[0-9]{0,}))#',$str, $matches8);
   preg_match('#(?P<x>[Ee]?(118|119|120|121|122)[Dd]([0-9]{1,2}\.?[0-9]{0,})[Mm]?)#',$str, $matches9_1);
   preg_match('#(?P<y>[Nn]?[^0-9]?(21|22|23|24|25)[Dd]([0-9]{1,2}\.?[0-9]{0,})[Mm]?)#',$str, $matches10_1);
-	preg_match('#(?P<x>[Ee]?(118|119|120|121|122)[Dd]([0-9]{1,2}\.?[0-9]{0,})[Mm]([0-9]{1,2}\.?[0-9]{0,})[Ss]?)#',$str, $matches9);
-	preg_match('#(?P<y>[Nn]?[^0-9]?(21|22|23|24|25)[Dd]([0-9]{1,2}\.?[0-9]{0,})[Mm]([0-9]{1,2}\.?[0-9]{0,})[Ss]?)#',$str, $matches10); 
-
+  preg_match('#(?P<x>[Ee]?(118|119|120|121|122)[Dd]([0-9]{1,2}\.?[0-9]{0,})[Mm]([0-9]{1,2}\.?[0-9]{0,})[SsDd]?)#',$str, $matches9);
+  preg_match('#(?P<y>[Nn]?[^0-9]?(21|22|23|24|25)[Dd]([0-9]{1,2}\.?[0-9]{0,})[Mm]([0-9]{1,2}\.?[0-9]{0,})[SsDd]?)#',$str, $matches10);
 	preg_match('#(?P<x>[Ee](118|119|120|121|122)[。°]+([0-9]{1,2}\.?[0-9]{0,})[’]+([0-9]{1,2}\.?[0-9]{0,})[”]+)#',$str, $matches11);
 	preg_match('#(?P<y>[Nn][^0-9]?(21|22|23|24|25)[。°]+([0-9]{1,2}\.?[0-9]{0,})[’]+([0-9]{1,2}\.?[0-9]{0,})[”]+)#',$str, $matches12);
   // 對於全形句點或度要使用+的原因是這些字元是multibytes, 若是大D小d等等就沒這問題了是故可以直接[Dd] 
@@ -67,12 +66,22 @@ function extract_xy($str){
   if(!empty($matches10_1['y'])){
     $matches['y']=round($matches10_1[2] + $matches10_1[3] / 60, 6);
   }
-	if(!empty($matches9['x'])){
-		$matches['x']=round($matches9[2] + $matches9[3] / 60 + $matches9[4] / 3600, 6);
-	}
-	if(!empty($matches10['y'])){
-		$matches['y']=round($matches10[2] + $matches10[3] / 60 + $matches10[4] / 3600, 6);
-	}
+  if(!empty($matches9['x'])){
+    if (($matches9['x'][strlen($matches9['x'])-1] != 'd')&&($matches9['x'][strlen($matches9['x'])-1] != 'D')) {
+      $matches['x']=round($matches9[2] + $matches9[3] / 60 + $matches9[4] / 3600, 6);
+    }
+    else {
+      $matches['x']=round($matches9[2] + $matches9[3] / 60, 6)
+    }
+  }
+  if(!empty($matches10['y'])){
+    if (($matches10['y'][strlen($matches10['y'])-1] != 'd')&&($matches10['y'][strlen($matches10['y'])-1] != 'D')) {
+      $matches['y']=round($matches10[2] + $matches10[3] / 60 + $matches10[4] / 3600, 6);
+    }
+    else {
+      $matches['y']=round($matches10[2] + $matches10[3] / 60, 6);
+    }
+  }
 	if(!empty($matches11['x'])){
 		$matches['x']=round($matches11[2] + $matches11[3] / 60 + $matches11[4] / 3600, 6);
 	}
