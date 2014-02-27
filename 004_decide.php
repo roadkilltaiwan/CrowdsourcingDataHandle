@@ -18,6 +18,7 @@
 */
 
 
+
 ERROR_REPORTING(E_ERROR);
 $dir_004 = implode("/", explode("/", realpath(__FILE__), -1));
 #   include_once "../includes/
@@ -107,8 +108,8 @@ foreach ($posts as $post) {
 	}
 	else if ($post['ccn']) {
 		$frags = explode("|", $post['ccn']);
-		$ns_tmp = array();
 		foreach ($frags as $f) {
+			$ns_tmp = array();
 			$thread_ccns[$oid][$f] =  true;
 			$ns_tmp['cn'] = $f;
 			$ns_tmp['sn'] = '';
@@ -120,10 +121,11 @@ foreach ($posts as $post) {
 			}
 			if (!$found) {
 				$fill = false;
-				foreach ($thread_ns[$oid] as &$set) {
+				$tmp_ns = $thread_ns;
+				foreach ($tmp_ns[$oid] as $set_id => $set) {
 					if (!$set['cn'] && $set['sn']) {
 						$fill = true;
-						$set['cn'] = $f;
+						$thread_ns[$oid][$set_id]['cn'] = $f;
 					}
 				}
 				if (!$fill) {
@@ -131,15 +133,11 @@ foreach ($posts as $post) {
 				}
 			}
 		}
-		if ($oid == '662402543780371') {
-			var_dump(7788);
-			var_dump($ns_tmp);
-		}
 	}
 	else if ($post['csn']) {
 		$frags = explode("|", $post['csn']);
-		$ns_tmp = array();
 		foreach ($frags as $f) {
+			$ns_tmp = array();
 			$thread_csns[$oid][$f] =  true;
 			$ns_tmp['cn'] = '';
 			$ns_tmp['sn'] = $f;
@@ -151,10 +149,11 @@ foreach ($posts as $post) {
 			}
 			if (!$found) {
 				$fill = false;
-				foreach ($thread_ns[$oid] as &$set) {
+				$tmp_ns = $thread_ns;
+				foreach ($tmp_ns[$oid] as $set_id => $set) {
 					if ($set['cn'] && !$set['sn']) {
 						$fill = true;
-						$set['sn'] = $f;
+						$thread_ns[$oid][$set_id]['sn'] = $f;
 					}
 				}
 				if (!$fill) {
@@ -239,8 +238,6 @@ foreach ($posts as $post) {
 			$tiw = true;
 		}
 
-
-
 		if (!empty($comment['ccn'])&&!empty($comment['csn'])) {
 			$cfrags = explode("|", $comment['ccn']);
 			$sfrags = explode("|", $comment['csn']);
@@ -256,11 +253,16 @@ foreach ($posts as $post) {
 					$whiteList[$oid][$sfrags[$cidx]] = true;
 				}
 			}
+			if ($oid == '462415300456476') {
+				var_dump('both');
+				var_dump($ns_tmp);
+				var_dump($thread_ns[$oid]);
+			}
 		}
 		else if ($comment['ccn']) {
 			$frags = explode("|", $comment['ccn']);
-			$ns_tmp = array();
 			foreach ($frags as $f) {
+				$ns_tmp = array();
 				$thread_ccns[$oid][$f] =  true;
 				$ns_tmp['cn'] = $f;
 				$ns_tmp['sn'] = '';
@@ -272,10 +274,11 @@ foreach ($posts as $post) {
 				}
 				if (!$found) {
 					$fill = false;
-					foreach ($thread_ns[$oid] as &$set) {
+					$tmp_ns = $thread_ns;
+					foreach ($tmp_ns[$oid] as $set_id => $set) {
 						if (!$set['cn'] && $set['sn']) {
 							$fill = true;
-							$set['cn'] = $f;
+							$thread_ns[$oid][$set_id]['cn'] = $f;
 						}
 					}
 					if (!$fill) {
@@ -283,15 +286,21 @@ foreach ($posts as $post) {
 					}
 				}
 			}
-			if ($oid == '662402543780371') {
-				var_dump(3344);
+			if ($oid == '462415300456476') {
+				var_dump('ccn');
 				var_dump($ns_tmp);
+				var_dump($thread_ns[$oid]);
 			}
 		}
 		else if ($comment['csn']) {
 			$frags = explode("|", $comment['csn']);
-			$ns_tmp = array();
+			if ($oid == '462415300456476') {
+				var_dump('csn');
+				var_dump($ns_tmp);
+				var_dump($thread_ns[$oid]);
+			}
 			foreach ($frags as $f) {
+				$ns_tmp = array();
 				$thread_csns[$oid][$f] =  true;
 				$ns_tmp['cn'] = '';
 				$ns_tmp['sn'] = $f;
@@ -303,10 +312,11 @@ foreach ($posts as $post) {
 				}
 				if (!$found) {
 					$fill = false;
-					foreach ($thread_ns[$oid] as &$set) {
+					$tmp_ns = $thread_ns;
+					foreach ($tmp_ns[$oid] as $set_id => $set) {
 						if ($set['cn'] && !$set['sn']) {
 							$fill = true;
-							$set['sn'] = $f;
+							$thread_ns[$oid][$set_id]['sn'] = $f;
 						}
 					}
 					if (!$fill) {
@@ -317,6 +327,11 @@ foreach ($posts as $post) {
 				if ($tiw) {
 					$whiteList[$oid][$f] = true;
 				}
+			}
+			if ($oid == '462415300456476') {
+				var_dump('csn');
+				var_dump($ns_tmp);
+				var_dump($thread_ns[$oid]);
 			}
 		}
 
@@ -427,14 +442,18 @@ foreach ($posts as $post) {
 			$decide[$oid]['shot_date'] = $ed;
 		}
 	}
+	if (!empty($thread_ns['462415300456476'])) {
+		echo "thread_ns: " . $oid . ", watch: " . $thread_ns['462415300456476'][0]['cn'] . "\n";
+	}
 }
 #var_dump($decide['10201378041358260']);
 foreach ($decide as $oid => $item) {
 	if (empty($oid)) continue;
 
-	if ($oid == '662402543780371') {
+	if ($oid == '462415300456476') {
 		var_dump(5566);
 		var_dump($item);
+		var_dump($thread_ns[$oid]);
 	}
 	// common names
 	$species = mysql_real_escape_string($item['species']);

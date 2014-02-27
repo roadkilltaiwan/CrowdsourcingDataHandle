@@ -37,7 +37,7 @@ $con = mysql_connect(DB_SERVER,DB_USER,DB_PASS);
 mysql_select_db(DB_DATABASE, $con);
 mysql_query("set names 'utf8';");
 
-$update_location = 1;
+$update_location = 0;
 
 // 更新地點時bigTable自己也要更新自己一下okㄟ耶?
 
