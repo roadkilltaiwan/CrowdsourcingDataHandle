@@ -333,7 +333,7 @@ if (!empty($ccns)) {
 			}
 			else if (empty($csns[$ccn_key])) {
 				$ccn_replaced = str_replace(array("台灣"), array("臺灣"), $ccn);
-				$url = "http://140.109.29.92/solr/another/select?fl=is_accepted_name,name_clean&wt=json&qf=name_zhtw&qf=common_name&fq=rank:species&fq=is_accepted_name:yes&rows=1&q=" . urlencode($ccn . " " . $ccn_replaced);
+				$url = "http://140.109.28.72/solr/another/select?fl=is_accepted_name,name_clean&wt=json&qf=name_zhtw&qf=common_name&fq=rank:species&fq=is_accepted_name:yes&rows=1&q=" . urlencode($ccn . " " . $ccn_replaced);
 				$res = json_decode(file_get_contents($url));
 				if (!empty($res->response->docs)) {
 					foreach ($res->response->docs as $r) {
@@ -356,7 +356,7 @@ if (empty($ret_match)&&!empty($mcns)) {
 		if (!empty($msns)) {
 			foreach ($msns as $msn) {
 				if (!empty($mcn)&&!empty($msn)) {
-					$url = "http://140.109.29.92/solr/another/select?fl=is_accepted_name,name_clean&wt=json&qf=name_code&q=" . urlencode($msn);
+					$url = "http://140.109.28.72/solr/another/select?fl=is_accepted_name,name_clean&wt=json&qf=name_code&q=" . urlencode($msn);
 					$res = json_decode(file_get_contents($url));
 					if (!empty($res->response->docs)) {
 						$sciname = $res->response->docs[0]->name_clean;
@@ -378,7 +378,7 @@ if (!empty($ret_match_tmp)) {
 	foreach ($ret_match_tmp as $cn => $sns_tmp) {
 		foreach ($sns_tmp as $sn => $dummy) {
 			if (empty($cn)&&!empty($sn)) {
-				$url = "http://140.109.29.92/solr/another/select?fq=".urlencode("rank:species")."&fl=is_accepted_name,name_zhtw&wt=json&q=" . urlencode($sn);
+				$url = "http://140.109.28.72/solr/another/select?fq=".urlencode("rank:species")."&fl=is_accepted_name,name_zhtw&wt=json&q=" . urlencode($sn);
 				$res = json_decode(file_get_contents($url));
 
 if (!empty($argv[1])) {

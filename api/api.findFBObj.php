@@ -63,7 +63,7 @@ while ($row = @mysql_fetch_assoc($res)) {
 
 	foreach ($snames as $snid => $sname) {
 		if (empty($cnames[$snid])&&!empty($sname)) {
-			$url = "http://140.109.29.92/solr/another/select?fl=name_zhtw&wt=json&qf=name_clean&fq=rank:species&q=" . $sname;
+			$url = "http://140.109.28.72/solr/another/select?fl=name_zhtw&wt=json&qf=name_clean&fq=rank:species&q=" . $sname;
 			$res = json_decode(file_get_contents($url));
 			$cnames[$snid] = $res->response->docs[0]->name_zhtw;
 		}
