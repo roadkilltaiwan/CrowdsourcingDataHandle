@@ -18,7 +18,6 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 ini_set ("memory_limit", "512M");
 #include_once "../../vgd/includes/webbots/LIB_parse.php";
 
@@ -556,7 +555,12 @@ class simpleNER {
 		else {
 			$root = $param_root;
 		}
-		$this->dict = unserialize(file_get_contents($root."dict"));
+		if (file_exists($root."dict")) {
+			$this->dict = unserialize(file_get_contents($root."dict"));
+		}
+		else {
+			$this->loadSpeciesCommonNamesDict($root."../../dict/dict_wo_sort.txt");
+		}
 		$this->dict_replacement = unserialize(file_get_contents($root."dict_replacement"));
 #		$this->c2s = unserialize(file_get_contents("c2s"));
 		for ($i=$this->prefixLengthMin; $i<=$this->prefixLengthMax; $i++) {

@@ -210,6 +210,8 @@ while ($row = mysql_fetch_assoc($res)) {
 		}
 	}
 }
+$updateCoordSQL = "update bigTable set x = NULL, y = NULL where x = 0 or y = 0;";
+mysql_query($updateCoordSQL);
 #var_dump($rows);
 
 log_end();

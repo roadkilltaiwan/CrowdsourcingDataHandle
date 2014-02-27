@@ -484,7 +484,7 @@ foreach ($decide as $oid => $item) {
 		$common_names = array();
 		if (!empty($ner->c2s[$species])) {
 			foreach ($ner->c2s[$species] as $nc => $dummy) {
-				$url = "http://140.109.29.92/solr/another/select?fl=is_accepted_name,name_clean&wt=json&qf=name_code&q=" . $nc;
+				$url = "http://140.109.28.72/solr/another/select?fl=is_accepted_name,name_clean&wt=json&qf=name_code&q=" . $nc;
 				$res = json_decode(file_get_contents($url));
 				if (!empty($res->response->docs)) {
 					$sciname = $res->response->docs[0]->name_clean;
