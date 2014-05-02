@@ -65,7 +65,7 @@ while ($row = @mysql_fetch_assoc($res)) {
 		if (empty($cnames[$snid])&&!empty($sname)) {
 			$url = "http://140.109.28.72/solr/another/select?fl=name_zhtw&wt=json&qf=name_clean&fq=rank:species&q=" . $sname;
 			$res = json_decode(file_get_contents($url));
-			$cnames[$snid] = $res->response->docs[0]->name_zhtw;
+			$cnames[$snid] = @$res->response->docs[0]->name_zhtw;
 		}
 	}
 	$ids = explode("|", $row['custom_id']);
