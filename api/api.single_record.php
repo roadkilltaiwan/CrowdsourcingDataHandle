@@ -36,7 +36,7 @@ if (!empty($_REQUEST['username'])) {
 	$sql_tpl = "select * from Person where person_id = '%s' or username = '%s'";
 	$sql = sprintf($sql_tpl, mysql_real_escape_string($user), mysql_real_escape_string($user));
 	$res = mysql_query($sql);
-	$row = mysql_fetch_assoc($res);
+	$row = @mysql_fetch_assoc($res);
 	if (empty($row['authState'])) {
 		$authState = '未授權';
 	}

@@ -41,7 +41,7 @@ $access_token = file_get_contents($dir_002."/cache/facebookApp/access_token.txt"
 
 if(!empty($access_token)) {
 
-	$sql = "select * from Person where `username` = '';";
+	$sql = "select * from Person where `username` = `person_id`;";
 	$persons = $db->fetch_array($sql);
 
 	foreach ($persons as $person) {

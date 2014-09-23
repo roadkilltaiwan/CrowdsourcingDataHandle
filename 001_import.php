@@ -62,8 +62,8 @@ $access_token = file_get_contents($dir_001."/cache/facebookApp/access_token.txt"
 function whoDidThisToMe ($id, $getVar, $action) {
 	log_update("find out who did $action to $id");
 	$limit = 1000;
-	$url = "https://graph.facebook.com/$id/$action?limit=" . $limit;
-	$whoDid = http($url, "", GET, $getVar, FALSE, NULL);
+	$url = "https://graph.facebook.com/$id/$action";
+	$whoDid = http($url, "", GET, $getVar + array('limit' => $limit), FALSE, NULL);
 	$weDid = json_decode($whoDid['FILE']);
 #	var_dump($weDid);
 	$data = (array) $weDid->data;
@@ -338,7 +338,7 @@ if (!empty($access_token)) {
 			}
 			foreach ($persons as $pid => $commenter_name) {
 #				$person_sql = "replace into `Person` (`person_id`, `name`) values ('$pid', '$commenter_name')";
-				$person_sql = "insert into `Person` (`person_id`, `name`) values ('$pid', '$commenter_name')
+				$person_sql = "insert into `Person` (`person_id`, `username`, `name`) values ('$pid', '$pid', '$commenter_name')
 						on duplicate key update
 						`name` = '$commenter_name'
 						";

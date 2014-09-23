@@ -71,48 +71,48 @@ echo $sql . "\n";
 
 $res = mysql_query($sql);
 
-while ($row = mysql_fetch_assoc($res)) {
-	log_update("建立照片:".$row['photo_id']."之metadata");
-	$q = "select * from bigTable where photo_id = '".$row['photo_id']."';";
+while ($rowCrawled = mysql_fetch_assoc($res)) {
+	log_update("建立照片:".$rowCrawled['photo_id']."之metadata");
+	$q = "select * from bigTable where photo_id = '".$rowCrawled['photo_id']."';";
 	$res2 = mysql_query($q);
-	$row2 = mysql_fetch_assoc($res2);
+	$rowExist = mysql_fetch_assoc($res2);
 	$sets = array();
 	$sets_location = array();
-#	var_dump(empty($row2));
-	if (empty($row2)) {
-		foreach ($row as $col => $val) {
+#	var_dump(empty($rowExist));
+	if (empty($rowExist)) {
+		foreach ($rowCrawled as $col => $val) {
 			if (($col != 'person_id')&&($col != 'post_from')&&($col != 'id_type')&&($col != 'custom_id')&&($col != 'x')&&($col != 'y')) {
 				$sets[] = "`$col` = '".mysql_real_escape_string($val)."'";
 			}
 		}
 
-		if ($row['x'] == 0) {
+		if ($rowCrawled['x'] == 0) {
 			$sets[] = "`x` = NULL";
 		}
 		else {
-			$sets[] = "`x` = '".mysql_real_escape_string($row['x'])."'";
+			$sets[] = "`x` = '".mysql_real_escape_string($rowCrawled['x'])."'";
 		}
 
-		if ($row['y'] == 0) {
+		if ($rowCrawled['y'] == 0) {
 			$sets[] = "`y` = NULL";
 		}
 		else {
-			$sets[] = "`y` = '".mysql_real_escape_string($row['y'])."'";
+			$sets[] = "`y` = '".mysql_real_escape_string($rowCrawled['y'])."'";
 		}
 
 		var_dump($sets);
 
 		$person_id = '';
-		if (!empty($row['person_id'])) {
-			$person_id = $row['person_id'];
+		if (!empty($rowCrawled['person_id'])) {
+			$person_id = $rowCrawled['person_id'];
 		}
-		else if (!empty($row['post_from'])) {
-			$person_id = $row['post_from'];
+		else if (!empty($rowCrawled['post_from'])) {
+			$person_id = $rowCrawled['post_from'];
 		}
 		$sets[] = "`person_id` = '".mysql_real_escape_string($person_id)."'";
 		$custom_id = '';
-		if (!empty($row['custom_id'])) {
-			$custom_id = $row['id_type'] . "(" . $row['custom_id'] . ")";
+		if (!empty($rowCrawled['custom_id'])) {
+			$custom_id = $rowCrawled['id_type'] . "(" . $rowCrawled['custom_id'] . ")";
 			$sets[] = "`custom_id` = '".mysql_real_escape_string($custom_id)."'";
 		}
 		$sql = "insert into bigTable set " . implode(", ", $sets); 
@@ -121,11 +121,11 @@ while ($row = mysql_fetch_assoc($res)) {
 	}
 	else {
 		$tmp_location = array();
-		var_dump(implode("|", $row));
-		var_dump(implode("|", $row2));
+		var_dump(implode("|", $rowCrawled));
+		var_dump(implode("|", $rowExist));
 
 		$tmp = array();
-		foreach ($row2 as $col2 => $val2) {
+		foreach ($rowExist as $col2 => $val2) {
 			if (!empty($val2)) {
 				$tmp[$col2] = explode("|", $val2);
 				if ($col2 == 'custom_id') {
@@ -136,7 +136,7 @@ while ($row = mysql_fetch_assoc($res)) {
 				$tmp[$col2] = array();
 			}
 		}
-		foreach ($row as $col => $val) {
+		foreach ($rowCrawled as $col => $val) {
 			if (
 				($col != 'person_id')&&
 				($col != 'post_from')&&
@@ -160,21 +160,21 @@ while ($row = mysql_fetch_assoc($res)) {
 			}
 		}
 
-		if (!empty($row['p1'])) {
-			$tmp['p1'][0] = $row['p1'];
-			$tmp_location['p1'][0] = $row['p1'];
+		if (!empty($rowCrawled['p1'])) {
+			$tmp['p1'][0] = $rowCrawled['p1'];
+			$tmp_location['p1'][0] = $rowCrawled['p1'];
 		}
-		if (!empty($row['p2'])) {
-			$tmp['p2'][0] = $row['p2'];
-			$tmp_location['p2'][0] = $row['p2'];
+		if (!empty($rowCrawled['p2'])) {
+			$tmp['p2'][0] = $rowCrawled['p2'];
+			$tmp_location['p2'][0] = $rowCrawled['p2'];
 		}
 
 		$person_id = '';
-		if (!empty($row['person_id'])) {
-			$person_id = $row['person_id'];
+		if (!empty($rowCrawled['person_id'])) {
+			$person_id = $rowCrawled['person_id'];
 		}
-		else if (!empty($row['post_from'])) {
-			$person_id = $row['post_from'];
+		else if (!empty($rowCrawled['post_from'])) {
+			$person_id = $rowCrawled['post_from'];
 		}
 		if (!in_array($person_id, $tmp['person_id'])) {
 			if (!empty($person_id)) {
@@ -182,8 +182,8 @@ while ($row = mysql_fetch_assoc($res)) {
 			}
 		}
 		$custom_id = '';
-		if (!empty($row['custom_id'])) {
-			$custom_id = ucfirst($row['id_type']) . "(" . $row['custom_id'] . ")";
+		if (!empty($rowCrawled['custom_id'])) {
+			$custom_id = ucfirst($rowCrawled['id_type']) . "(" . $rowCrawled['custom_id'] . ")";
 			if (!in_array($custom_id, $tmp['custom_id'])) {
 				if (!empty($custom_id)) {
 					$tmp['custom_id'][] = $custom_id;
@@ -198,13 +198,13 @@ while ($row = mysql_fetch_assoc($res)) {
 			$val2 = implode("|", $val2s);
 			$sets_location[] = "`$col2` = '".mysql_real_escape_string($val2)."'";
 		}
-		if ($row2['hu'] != 1) {
-			$sql = "update bigTable set " . implode(", ", $sets) . " where photo_id = '".$row2['photo_id']."'";
+		if ($rowExist['hu'] != 1) {
+			$sql = "update bigTable set " . implode(", ", $sets) . " where photo_id = '".$rowExist['photo_id']."'";
 			mysql_query($sql);
 			echo $sql . "\n";
 		}
 		else if ($update_location == 1) {
-			$sql = "update bigTable set " . implode(", ", $sets_location) . " where photo_id = '".$row2['photo_id']."'";
+			$sql = "update bigTable set " . implode(", ", $sets_location) . " where photo_id = '".$rowExist['photo_id']."'";
 			mysql_query($sql);
 			echo $sql . "\n";
 		}
@@ -212,7 +212,6 @@ while ($row = mysql_fetch_assoc($res)) {
 }
 $updateCoordSQL = "update bigTable set x = NULL, y = NULL where x = 0 or y = 0;";
 mysql_query($updateCoordSQL);
-#var_dump($rows);
 
 log_end();
 
