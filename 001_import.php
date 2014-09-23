@@ -17,10 +17,12 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+## TODO
+## 把replace into都改成insert into ... on duplicate update ...
 
 $groups = array (
-	"238918712815615",	// 0 路殺社
-	"177883715557195",	// 1 慕光之城
+	"238918712815615",	// 路殺社
+	"177883715557195",	// 慕光之城
 );
 
 $group_id = $groups[0];
@@ -213,10 +215,19 @@ if (!empty($access_token)) {
 					mkdir('images/pools', 0777, true);
 				}
 				if (!file_exists('images/pools/'.$post_obj.'.jpg')) {
-					$image_contents = file_get_contents($image);
-					if (!empty($image_contents)) {
-						file_put_contents('images/pools/'.$post_obj.'.jpg', $image_contents);
-						$downloaded = 1;
+					for ($try = 0; $try < 3; $try++) {
+						$image_contents = file_get_contents($image);
+						if (!empty($image_contents)) {
+							file_put_contents('images/pools/'.$post_obj.'.jpg', $image_contents);
+							$downloaded = 1;
+							break;
+						}
+						else {
+							sleep(2);
+						}
+					}
+					if ($download != 1) {
+						file_put_contents($dir_001 . "/logs/strike3img.log", ($image . "\n"), FILE_APPEND);
 					}
 				}
 				else {
