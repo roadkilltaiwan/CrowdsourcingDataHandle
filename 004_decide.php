@@ -205,11 +205,9 @@ foreach ($posts as $post) {
 			$species = $species[0];
 		}
 		else {
-			$species = explode("|", $match);
-			$species = $species[0];
-			$species = explode("(", $species);
-			$score = trim($species[1], ")");
-			$species = $species[0];
+			$tmp = pickSpecies($match);
+			$species = $tmp['species'];
+			$score = $tmp['score'];
 		}
 		if (empty($score)) {
 			$score = 1;
@@ -394,11 +392,9 @@ foreach ($posts as $post) {
 					$species = $species[0];
 				}
 				else {
-					$species = explode("|", $cguess);
-					$species = $species[0];
-					$species = explode("(", $species);
-					$score = trim($species[1], ")");
-					$species = $species[0];
+					$tmp = pickSpecies($cmatch);
+					$species = $tmp['species'];
+					$score = $tmp['score'];
 				}
 			}
 			if ($score > 1) $score = 1;
@@ -549,5 +545,33 @@ foreach ($decide as $oid => $item) {
 }
 
 log_end();
+
+function pickSpecies ($match) {
+  $species = explode("|", $match);
+  $max_score = -1;
+  foreach ($species as $sp) {
+    $sp = explode("(", $sp);
+    $score = trim($sp[1], ")");
+    $sp_score[$sp] = $score;
+  }
+  arsort($sp_score);
+  foreach ($sp_score as $sp => $score) {
+    $length = mb_strlen($sp);
+    $sp_len[$sp] = $length;
+  }
+  arsort($sp_len);
+  $name_string = "";
+  $tmp_sp_score = $sp_score;
+  foreach ($sp_len as $sp => $length) {
+    if (mb_strpos($name_string, $sp, 0, "UTF-8") === false) {
+      $name_string .= $sp;
+    }
+    else {
+      unset($tmp_sp_score[$sp]);
+    }
+  }
+  return array('species' => $tmp_sp_score[0], 'score' => $tmp_sp_score[0]);
+}
+
 
 ?>
