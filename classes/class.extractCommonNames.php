@@ -76,9 +76,14 @@ class simpleNER {
 #		$this->c2s[$val][] = $row['name_code'];
 	}
 
-	function loadC2S () {
+	function loadC2S ($c2sPath="") {
 		$dir_classes = implode("/", explode("/", realpath(__FILE__), -1));
-		$c2sMaps = explode("\n",file_get_contents($dir_classes . "/../dict/c2s.csv"));
+    
+		if ($c2sPath == "") {
+			$c2sPath = $dir_classes . "/../dict/c2s.csv";
+		}
+    
+		$c2sMaps = explode("\n",file_get_contents($c2sPath));
 		foreach ($c2sMaps as $c2sMap) {
 
 			if (empty($c2sMap)) continue;
