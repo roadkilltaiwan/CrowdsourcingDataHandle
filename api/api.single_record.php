@@ -259,6 +259,7 @@ else {
 
 $tmp_string = $string;
 $extra = extractExtra($tmp_string);
+$trid = extractTaiRONID($tmp_string);
 $xy = extract_xy($tmp_string);
 
 $ner->extractSpeciesCommonNames($string);
@@ -400,7 +401,7 @@ if (!empty($argv[1])) {
 }
 
 
-$res = array ('match'=>$ret_match, 'guess'=>$names_guessed_in_post, 'extra'=>$extra, 'date'=>$date, 'xy'=>$xy, 'tagged'=>$tagged, 'auth' => $auth);
+$res = array ('match'=>$ret_match, 'guess'=>$names_guessed_in_post, 'extra'=>$extra, 'date'=>$date, 'xy'=>$xy, 'tagged'=>$tagged, 'auth' => $auth, 'trid' => $trid);
 echo json_encode($res);
 
 

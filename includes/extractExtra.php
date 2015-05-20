@@ -36,7 +36,7 @@ function extractExtra ($text) {
 
 	$spnoPattern1 = '/[^a-zA-Z0-9](RK[0-9]{3,})/';
 	$spnoPattern2 = '/[^a-zA-Z0-9](RN[0-9]{4,})/';
-	$clnoPattern = '/[^a-zA-Z0-9]([A-Z]{2,4}[0-9]{8}(\-[0-9])?)/';
+	$clnoPattern = '/[^a-zA-Z0-9]([A-Z]{2,4}[0-9]{8}(\-[0-9])?([0-9])*)/';
 
 	preg_match($spnoPattern1, $text, $match);
 	if (empty($match[1])) {
@@ -64,7 +64,22 @@ function extractExtra ($text) {
 
 }
 
-
+function extractTaiRONID ($text) {
+  $taironIDPattern = '/\[roadkillApp\: ([0-9]+) \]/';
+  preg_match($taironIDPattern, $text, $match2);
+  if (!empty($match2[1])) {
+    $taironID = $match2[1];
+  }
+  else {
+    $taironID = '';
+  }
+  if (!empty($taironID)) {
+    return $taironID;
+  }
+  else {
+    return "";
+  }
+}
 
 
 

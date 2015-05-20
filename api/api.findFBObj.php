@@ -110,6 +110,7 @@ while ($row = @mysql_fetch_assoc($res)) {
 	$ret['actOpts'] = @$row['activity'];
 	$ret['hu'] = @$row['hu'];
   $ret['toTaiRON'] = @$row['archive'];
+  $ret['trid'] = @$row['trid'];
 }
 echo json_encode($ret);
 

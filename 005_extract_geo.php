@@ -93,6 +93,11 @@ while ($row = mysql_fetch_array($msg, MYSQL_NUM)){
 		if (!empty($arr['x'])&&!empty($arr['y'])) {
 			$arr['placename_id']=@$co[2];
 			}
+      // 20141128 Mai改:決定不相信抓到的地點也不由地點回填坐標
+      $arr['x']=0;
+      $arr['y']=0;
+      $arr['determine_name'] = "";
+      $arr['placename_id'] = "";
 		}
 	
 	if(!empty($out_ro)){

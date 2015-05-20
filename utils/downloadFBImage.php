@@ -20,22 +20,24 @@
 
 
 
-
+<?php
 $imageTmp = explode("?", @$argv[1]);
-$image = $imageTmp[0];
+$image = @$argv[1];
+#$image = $imageTmp[0];
 $photo_id = @$argv[2];
 
 $dir_utils = implode("/", explode("/", realpath(__FILE__), -1));
 
 echo "called\n";
 if (!empty($image)&&!empty($photo_id)) {
-	if (!file_exists($dir_utils.'/../images/pools/'.$photo_id.'.jpg')) {
-		echo "file not found\n";
-		$image_contents = file_get_contents($image);
-		if (!empty($image_contents)) {
-			file_put_contents($dir_utils.'/../images/pools/'.$photo_id.'.jpg', $image_contents);
-			echo "file saved\n";
-		}
-	}
+        if (!file_exists($dir_utils.'/../images/pools/'.$photo_id.'.jpg')) {
+                echo "file not found\n";
+                echo "get image from url: $image \n";
+                $image_contents = file_get_contents($image);
+                if (!empty($image_contents)) {
+                        file_put_contents($dir_utils.'/../images/pools/'.$photo_id.'.jpg', $image_contents);
+                        echo "file saved\n";
+                }
+        }
 }
-?>
+?>?>

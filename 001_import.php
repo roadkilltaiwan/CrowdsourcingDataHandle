@@ -300,8 +300,11 @@ if (!empty($access_token)) {
 			$photo_name = mysql_real_escape_string($photo->name);
 			$photo_ctime = mysql_real_escape_string($photo->created_time);
 			$photo_utime = mysql_real_escape_string($photo->updated_time);
-			$photo_sql = "replace into `Photo` (`photo_id`, `name`, `picture`, `created_time`, `updated_time`, `x`, `y`, `link`, `embedded_in`, `downloaded`, `uploaded_by`) 
-	values ('$photo_id','$photo_name','$photo_picture','$photo_ctime','$photo_utime','$photo_x','$photo_y','$photo_link', '$post_id', $downloaded, '$uploaded_by');";
+      
+      $trid = extractTaiRONID($post_message);
+      
+			$photo_sql = "replace into `Photo` (`photo_id`, `name`, `picture`, `created_time`, `updated_time`, `x`, `y`, `link`, `embedded_in`, `downloaded`, `uploaded_by`, `trid`) 
+	values ('$photo_id','$photo_name','$photo_picture','$photo_ctime','$photo_utime','$photo_x','$photo_y','$photo_link', '$post_id', $downloaded, '$uploaded_by', '$trid');";
 			$db->query($photo_sql);
 			echo $photo_sql . "\n";
 

@@ -42,7 +42,7 @@ $update_location = 0;
 // 更新地點時bigTable自己也要更新自己一下okㄟ耶?
 
 
-$sql = "select  `Photo`.`photo_id` AS `photo_id`,`Photo`.`link` AS `link`,`Photo`.`picture` AS `picture`,`Photo`.`embedded_in` AS `post_id`,
+$sql = "select  `Photo`.`trid` as `trid`, `Photo`.`photo_id` AS `photo_id`,`Photo`.`link` AS `link`,`Photo`.`picture` AS `picture`,`Photo`.`embedded_in` AS `post_id`,
 `Person`.`person_id` AS `person_id`,`Person`.`name` AS `name`,`Photo`.`created_time` AS `created_time`,`Decide`.`shot_date` AS `shot_date`,
 `Decide`.`common_name` AS `common_name`,`Decide`.`canonical_name` AS `canonical_name`,`Decide`.`tagged` AS `tagged`,`Decide`.`inWhiteList` AS `inWhiteList`,
 `Post`.`post_from` AS `post_from`,`Person`.`authState` AS `authState`, `byWhom`, `extra_ids`.`custom_id` AS `custom_id`, `extra_ids`.`id_type` as id_type ,
@@ -145,8 +145,8 @@ while ($rowCrawled = mysql_fetch_assoc($res)) {
 				($col != 'p1')&&
 				($col != 'p2')
 			) {
-				if (($col == 'tagged')||($col == 'inWhiteList')||($col == 'authState')||($col == 'byWhom')||($col == 'placename_id')) {
-					if (!is_null($val)||($val !== '')) {
+				if (($col == 'trid')||($col == 'tagged')||($col == 'inWhiteList')||($col == 'authState')||($col == 'byWhom')||($col == 'placename_id')||($col == 'x')||($col == 'y')) {
+					if (!is_null($val)&&($val !== '')) {
 						$tmp[$col][0] = $val;
 					}
 				}
@@ -160,14 +160,27 @@ while ($rowCrawled = mysql_fetch_assoc($res)) {
 			}
 		}
 
-		if (!empty($rowCrawled['p1'])) {
-			$tmp['p1'][0] = $rowCrawled['p1'];
-			$tmp_location['p1'][0] = $rowCrawled['p1'];
-		}
-		if (!empty($rowCrawled['p2'])) {
-			$tmp['p2'][0] = $rowCrawled['p2'];
-			$tmp_location['p2'][0] = $rowCrawled['p2'];
-		}
+    if (($rowCrawled['x']==0)||($rowCrawled['y']==0)) {
+      $tmp['p1'][0] = "";
+      $tmp_location['p1'][0] = "";
+      $tmp['placename_id'][0] = "";
+      $tmp_location['placename_id'][0] = "";
+    }
+    else if (!empty($rowCrawled['p1'])) {
+      $tmp['p1'][0] = $rowCrawled['p1'];
+      $tmp_location['p1'][0] = $rowCrawled['p1'];
+    }
+
+    if (($rowCrawled['x']==0)||($rowCrawled['y']==0)) {
+      $tmp['p2'][0] = "";
+      $tmp_location['p2'][0] = "";
+      $tmp['placename_id'][0] = "";
+      $tmp_location['placename_id'][0] = "";
+    }
+    else if (!empty($rowCrawled['p2'])) {
+      $tmp['p2'][0] = $rowCrawled['p2'];
+      $tmp_location['p2'][0] = $rowCrawled['p2'];
+    }
 
 		$person_id = '';
 		if (!empty($rowCrawled['person_id'])) {
